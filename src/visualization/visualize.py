@@ -1,12 +1,12 @@
-import pathlib
-import joblib
-import sys
-import yaml
-import pandas as pd
-from sklearn import metrics
-from sklearn import tree
-from dvclive import Live
-from matplotlib import pyplot as plt
+import pathlib #for working with file paths
+import joblib #for loading/saving models
+import sys #for working with command line arguments
+import yaml #for working with yaml files
+import pandas as pd #for working with dataframe
+from sklearn import metrics #for evaluation metrics
+from sklearn import tree #for tree based model
+from dvclive import Live #for logging metrics and plots during training
+from matplotlib import pyplot as plt #for creating plots
 
 
 def evaluate(model, X, y, split, live, save_path):
@@ -22,19 +22,19 @@ def evaluate(model, X, y, split, live, save_path):
         save_path (str): Path to save the metrics.
     """
 
-    predictions_by_class = model.predict_proba(X)
-    predictions = predictions_by_class[:, 1]
+    predictions_by_class = model.predict_proba(X) #returns probabilities for both the classes.
+    predictions = predictions_by_class[:, 1] #storing probabilities of positive class
 
     # Use dvclive to log a few simple metrics...
     avg_prec = metrics.average_precision_score(y, predictions)
     roc_auc = metrics.roc_auc_score(y, predictions)
     if not live.summary:
-        live.summary = {"avg_prec": {}, "roc_auc": {}}
-    live.summary["avg_prec"][split] = avg_prec
-    live.summary["roc_auc"][split] = roc_auc
+        live.summary = {"avg_prec": {}, "roc_auc": {}} #making dictionary of metrics
+    live.summary["avg_prec"][split] = avg_prec #update the metrics
+    live.summary["roc_auc"][split] = roc_auc #update the metrics
     # ... and plots...
     # ... like an roc plot...
-    live.log_sklearn_plot("roc", y, predictions, name=f"roc/{split}")
+    live.log_sklearn_plot("roc", y, predictions, name=f"roc/{split}")#log_sklearn_plot function is used to log plots specifically designed for scikit-learn metrics.
     # ... and precision recall plot...
     # ... which passes `drop_intermediate=True` to the sklearn method...
     live.log_sklearn_plot(
@@ -45,6 +45,8 @@ def evaluate(model, X, y, split, live, save_path):
         drop_intermediate=True,
     )
     # ... and confusion matrix plot
+    #It logs the confusion matrix for the given target labels y 
+    #and the class predictions obtained by selecting the class with the highest probability from predictions_by_class
     live.log_sklearn_plot(
         "confusion_matrix",
         y,
@@ -62,6 +64,8 @@ def save_importance_plot(live, model, feature_names):
         model (sklearn.ensemble.RandomForestClassifier): Trained classifier.
         feature_names (list): List of feature names.
     """
+    #fig: The whole plotting area or canvas.
+    #axes: The individual plots or subplots within the Figure. Multiple subplots can exist within a single Figure.
     fig, axes = plt.subplots(dpi=100)
     fig.subplots_adjust(bottom=0.2, top=0.95)
     axes.set_ylabel("Mean decrease in impurity")
@@ -70,8 +74,8 @@ def save_importance_plot(live, model, feature_names):
     forest_importances = pd.Series(importances, index=feature_names).nlargest(n=10)
     forest_importances.plot.bar(ax=axes)
 
-    live.log_image("importance.png", fig)
-
+    live.log_image("importance.png", fig) #log the generated image in logging directory of dvclive
+    #This allows tracking and visualizing the feature importance plot during the training process.
 
 def main():
 
