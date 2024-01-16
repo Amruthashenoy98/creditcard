@@ -40,14 +40,14 @@ class PredictionInput(BaseModel):
 
 
 # Load the pre-trained RandomForest model
-model_path = "model.joblib"
+model_path = "models/model.joblib"
 model = load(model_path)
 
-@app.get("/")
+@app.get("/") #get information from the server
 def home():
     return "Working fine"
 
-@app.post("/predict")
+@app.post("/predict") #we want to give information to the server and receive response in return
 def predict(input_data: PredictionInput):
     # Extract features from input_data and make predictions using the loaded model
     features = [input_data.Time,
@@ -87,4 +87,4 @@ def predict(input_data: PredictionInput):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="127.0.0.1", port=8080)
