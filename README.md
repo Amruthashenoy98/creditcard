@@ -8,6 +8,13 @@ creditcard
 
 A credit card fraud detection project. This project focuses on creating a smooth pipeline for the end-to-end lifecycle of Machine Learning.
 
+![image](https://github.com/Amruthashenoy98/creditcard/assets/48203194/081abdd6-4d39-4ec8-b29a-158cfafbffa7)
+
+![image](https://github.com/Amruthashenoy98/creditcard/assets/48203194/9bdd2308-c1ed-401b-9a28-d1dbdd0a4faf)
+
+![image](https://github.com/Amruthashenoy98/creditcard/assets/48203194/0863d5a7-82cc-47cc-ae1f-ae6535448e74)
+
+
 Project Organization
 ------------
 
