@@ -6,7 +6,7 @@ array(['Time', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9',
 creditcard
 ==============================
 
-A credit card fraud detection project. This is dummy project.
+A credit card fraud detection project. This project focuses on creating a smooth pipeline for the end-to-end lifecycle of Machine Learning.
 
 Project Organization
 ------------
